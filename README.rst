@@ -11,19 +11,19 @@ To use this template, you have multiple options. The following two will cover mo
 
 1. You can use GitHub's templating functionality. A new repository will be created on GitHub for your project. Use this option if your project does not yet have an online repository.
    
-    Click the "Use this template" button on the project template Github repository (see image below).
+   Click the "Use this template" button on the project template Github repository (see image below).
 
     .. image:: images/use_template.png
 
-    Simply select and confirm a name for your new repository, and a copy of this template will be created for you. 
+   Simply select and confirm a name for your new repository, and a copy of this template will be created for you. 
 
-    You can now clone your new repository onto your local machine. If your new repository is located at ``https://github.com/<your_name>/<my_new_project>``, for example:
+   You can now clone your new repository onto your local machine. If your new repository is located at ``https://github.com/<your_name>/<my_new_project>``, for example:
 
     .. code-block:: console
 
         $ git clone https://github.com/<your_name>/<my_new_project>
 
-    A folder named ``<my_new_project>`` will be created on your machine. It is already setup with a connection to your new GitHub repository, and you can begin developing your package!
+   A folder named ``<my_new_project>`` will be created on your machine. It is already setup with a connection to your new GitHub repository, and you can begin developing your package!
 
 2. If you already have a repository for your project, located for example at ``https://github.com/<your_name>/<my_existing_project>``, 
    you can use our template by cloning in onto you local machine. This downloads the files into a local folder, with a connection with the online repository already set up.
