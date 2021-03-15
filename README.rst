@@ -7,20 +7,42 @@ A tempalte to help you start a new projext in the SDyPy ecosystem.
 Using the template
 ------------------
 
-To use the template, simply clone or download the project source folder. You can clone this template repository to you machine by running:
+To use this template, you have multiple options. The following two will cover most use cases:
 
-.. code-block:: console
+1. You can use GitHub's templating functionality. A new repository will be created on GitHub for your project. Use this option if your project does not yet have an online repository.
+   
+    Click the "Use this template" button on the project template Github repository (see image below).
 
-    $ git clone https://github.com/sdypy/sdypy_template_project
+    .. image:: images/use_template.png
 
+    Simply select and confirm a name for your new repository, and a copy of this template will be created for you. 
 
-After that, create your own project repository and your local project to it. If your new repository is located at ``https://github.com/<your_name>/<my_new_project>``, for example:
+    You can now clone your new repository onto your local machine. If your new repository is located at ``https://github.com/<your_name>/<my_new_project>``, for example:
 
-.. code-block:: console
+    .. code-block:: console
 
-    $ git remote rm origin
-    $ git remote add origin https://github.com/<your_name>/<my_new_project>.git
+        $ git clone https://github.com/<your_name>/<my_new_project>
 
+    A folder named ``<my_new_project>`` will be created on your machine. It is already setup with a connection to your new GitHub repository, and you can begin developing your package!
+
+2. If you already have a repository for your project, located for example at ``https://github.com/<your_name>/<my_existing_project>``, 
+   you can use our template by cloning in onto you local machine. This downloads the files into a local folder, with a connection with the online repository already set up.
+   Do this by running :
+
+    .. code-block:: console
+
+        $ git clone https://github.com/sdypy/sdypy_template_project
+
+   Our template files will be downloaded into the ``sdypy_template_project`` folder. 
+   
+   You can now either copy these files into you existing local project folder, or connect the cloned repository in the ``sdypy_template_project`` folder with your existing online repository :
+
+    .. code-block:: console
+
+        $ git remote rm origin
+        $ git remote add origin https://github.com/ladisk/<my_existing_project>.git
+
+You are now setup to begin working on your project.
 
 To begin development, install the required packages with :
 
