@@ -42,6 +42,8 @@ release = '0.1.0'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
+    # Copy button in code cells
+    'sphinx_copybutton',
     # Add support for the Google docstring format
     'sphinx.ext.napoleon', 
 ]
