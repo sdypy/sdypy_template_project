@@ -1,7 +1,7 @@
 SDyPy Template Project
 -----------------------
 
-A tempalte to help you start a new projext in the SDyPy ecosystem.
+A template to help you start a new project in the SDyPy ecosystem.
 
 
 Using the template
