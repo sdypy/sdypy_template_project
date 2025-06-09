@@ -134,7 +134,7 @@ You can build your project and publish it to the `Python Package Index <https://
 
 .. code-block:: console
 
-    $ python build
+    $ python -m build
 
 The built project can be tested locally by installing the resulting ``.whl`` file, found in the ``dist/`` folder  in a new virtual environemtn:
 

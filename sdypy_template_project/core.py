@@ -3,7 +3,7 @@ from tqdm import tqdm
 
 # get_displacements
 from scipy.optimize import least_squares
-from scipy.interpolate import interp2d
+from scipy.interpolate import RectBivariateSpline
 
 
 def cost_function(p, x, y, f, g, W):
@@ -51,7 +51,7 @@ def translation(x, y, p, g):
     """
     dx, dy = p
     h, w = g.shape
-    spl = interp2d(np.arange(w), np.arange(h), g, kind='cubic')
+    spl = RectBivariateSpline(np.arange(h), np.arange(w), g, kx=3, ky=3)
     return spl(x + dx, y + dy)
 
 
