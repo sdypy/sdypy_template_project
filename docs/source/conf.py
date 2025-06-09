@@ -23,9 +23,10 @@ sys.path.insert(0, os.path.abspath('../..'))
 project = 'SDyPy project template'
 copyright = '2021, Janko Slavič, Domen Gorjup, Klemen Zaletelj'
 author = 'Janko Slavič, Domen Gorjup, Klemen Zaletelj'
+one_line_description = 'A template for SDyPy projects.'
 
 # The short X.Y version
-version = ''
+version = '0.1'
 # The full version, including alpha/beta/rc tags
 release = '0.1.0'
 
@@ -46,7 +47,23 @@ extensions = [
     'sphinx_copybutton',
     # Add support for the Google docstring format
     'sphinx.ext.napoleon', 
+
+    # 'myst_parser', # For Markdown support
 ]
+
+# Defined here: https://sphinx-copybutton.readthedocs.io/en/latest/use.html#using-regexp-prompt-identifiers
+copybutton_prompt_text = r">>> |\.\.\. |\$ |In \[\d*\]: | {2,5}\.\.\.: | {5,8}: "
+copybutton_prompt_is_regexp = True
+
+napoleon_custom_sections = ['Tags', 'Main methods']
+
+autodoc_default_options = {
+    'members': True,
+    'private-members': True,
+    'special-members': '__init__, __call__, __setattr__',
+    'member-order': 'bysource',
+    'show-inheritance': None,
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -54,8 +71,7 @@ templates_path = ['_templates']
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-# source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = {'.rst': 'restructuredtext', '.md': 'restructuredtext'}
 
 # The master toctree document.
 master_doc = 'index'
@@ -65,7 +81,7 @@ master_doc = 'index'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "English"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -81,7 +97,7 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_book_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -108,8 +124,15 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'sdypy_template_project_doc'
+# htmlhelp_basename = 'sdypy_template_project_doc'
+htmlhelp_basename = project.lower().replace(' ', '_') + '_doc'
 
+html_theme_options = {
+    "repository_branch": "master",
+    "navigation_with_keys": True,
+    "repository_url": "https://github.com/sdypy/sdypy_template_project",
+    "use_repository_button": True,
+}
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -134,9 +157,19 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
+
+# latex_documents = [
+    # (master_doc, 'sdypy_template_project.tex', 'SDyPy project template project Documentation',
+    #  'Janko Slavič, Domen Gorjup, Klemen Zaletelj', 'manual'),
+# ]
 latex_documents = [
-    (master_doc, 'sdypy_template_project.tex', 'SDyPy project template project Documentation',
-     'Janko Slavič, Domen Gorjup, Klemen Zaletelj', 'manual'),
+    (
+        master_doc, 
+        project.lower().replace(' ', '_') + '.tex', 
+        project + ' Documentation',
+        author, 
+        'manual'
+    )
 ]
 
 
@@ -144,9 +177,19 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
+
+# man_pages = [
+#     (master_doc, 'sdypy_template_project', 'SDyPy project template Documentation',
+#      [author], 1)
+# ]
 man_pages = [
-    (master_doc, 'sdypy_template_project', 'SDyPy project template Documentation',
-     [author], 1)
+    (
+        master_doc, 
+        project.lower().replace(' ', '_'), 
+        project + ' Documentation',
+        [author], 
+        1
+     )
 ]
 
 
@@ -155,10 +198,22 @@ man_pages = [
 # Grouping the document tree into Texinfo files. List of tuples
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
+
+# texinfo_documents = [
+#     (master_doc, 'SDyPy project template', 'SDyPy project template Documentation',
+#      author, 'SDyPy project template', 'One line description of project.',
+#      'Miscellaneous'),
+# ]
 texinfo_documents = [
-    (master_doc, 'SDyPy project template', 'SDyPy project template Documentation',
-     author, 'SDyPy project template', 'One line description of project.',
-     'Miscellaneous'),
+    (
+        master_doc, 
+        project.lower().replace(' ', '_'), 
+        project + ' Documentation',
+        author, 
+        project, 
+        one_line_description,
+        'Miscellaneous'
+    ),
 ]
 
 
@@ -181,3 +236,11 @@ epub_exclude_files = ['search.html']
 
 
 # -- Extension configuration -------------------------------------------------
+
+# -- Configuration for MyST parser (markdown in sphinx) ----------------------
+# see https://myst-parser.readthedocs.io/en/latest/ for more information
+# In extenssions, enable the myst_parser extension and install the package: `pip isntall myst-parser`
+myst_enable_extensions = [
+    "dollarmath",  # For LaTeX-style math in Markdown
+    "colon_fence", # For block directives using `::`
+]
