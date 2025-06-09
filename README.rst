@@ -54,7 +54,7 @@ Now you can replace the core source code modules in ``sdypy_template_project/`` 
 
 Remember to also replace the poject name (``sdypy_template_project``) with your own project name in the following files:
 
-- setup.py
+- pyproject.toml
 - README.rst
 - CONTRIBUTING.rst
 - the "sdypy_template_project" directory name
@@ -134,7 +134,7 @@ You can build your project and publish it to the `Python Package Index <https://
 
 .. code-block:: console
 
-    $ python setup.py sdist bdist_wheel
+    $ python build
 
 The built project can be tested locally by installing the resulting ``.whl`` file, found in the ``dist/`` folder  in a new virtual environemtn:
 
