@@ -16,6 +16,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('../..'))
+sys.setrecursionlimit(1500)
 
 
 # -- Project information -----------------------------------------------------
@@ -42,11 +43,12 @@ release = '0.1.0'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
-    # Copy button in code cells
+    'sphinx.ext.githubpages',
     'sphinx_copybutton',
-    # Add support for the Google docstring format
-    'sphinx.ext.napoleon', 
+    'sphinx.ext.napoleon',
 
     # 'myst_parser', # For Markdown support
 ]
@@ -81,7 +83,7 @@ master_doc = 'index'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = "English"
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -236,6 +238,10 @@ epub_exclude_files = ['search.html']
 
 
 # -- Extension configuration -------------------------------------------------
+
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3/', None),
+}
 
 # -- Configuration for MyST parser (markdown in sphinx) ----------------------
 # see https://myst-parser.readthedocs.io/en/latest/ for more information
