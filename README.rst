@@ -44,22 +44,33 @@ To use this template, you have multiple options. The following two will cover mo
 
 You are now setup to begin working on your project.
 
-To begin development, install the required packages with :
+To begin development, create a virtual environment and install the required packages using `uv <https://github.com/astral-sh/uv>`_:
 
 .. code-block:: console
 
-    $ python -m pip install -r requirements.dev.txt
+    $ uv venv
+    $ uv pip install -r requirements.dev.txt
+
+Alternatively, install directly from ``pyproject.toml`` in editable mode:
+
+.. code-block:: console
+
+    $ uv venv
+    $ uv pip install -e ".[dev]"
 
 Now you can replace the core source code modules in ``sdypy_template_project/`` with your code.
 
-Remember to also replace the poject name (``sdypy_template_project``) with your own project name in the following files:
+Remember to replace the project name (``sdypy_template_project``) with your own project name in the following files:
 
-- pyproject.toml
-- README.rst
-- CONTRIBUTING.rst
-- the "sdypy_template_project" directory name
+- ``pyproject.toml`` — ``name``, ``description``, ``keywords``, ``[project.urls]``
+- ``README.rst``
+- ``CONTRIBUTING.rst``
+- ``docs/source/conf.py`` — ``project``, ``author``, ``copyright``
+- ``sync_version.py`` — the ``package_name`` variable at the top
+- ``.github/workflows/release-and-publish-to-pypi.yml`` — the branch name in the ``git push`` step (``master`` or ``main``)
+- the ``sdypy_template_project/`` directory name itself
 
-Consider adding unit-tests for your project by modifying the files, found in ``tests/``. The provided test file structure is setup to work with `pytest <https://docs.pytest.org/en/latest/>`_.
+Consider adding unit-tests for your project by modifying the files found in ``tests/``. The provided test file structure is setup to work with `pytest <https://docs.pytest.org/en/latest/>`_.
 
 To also use the sphinx documentation, modify files in ``docs/source``, or remove the ``docs/`` folder and quickstart a fresh documentation version using the ``sphinx-quickstart`` command (see `Sphinx - Getting started <https://www.sphinx-doc.org/en/master/usage/quickstart.html>`_ for more info).
 
@@ -69,26 +80,32 @@ File structure
 
 The project code is structured as follows:
 
+pyproject.toml
+    the main project configuration file: package metadata, dependencies, and build system
+
 setup.py
-    the Python setup script, used to package the project
+    legacy setuptools configuration, kept for backwards compatibility
 
 requirements.txt
-    a list of packages, required to use this project
-    
+    a list of packages required to use this project
+
 requirements.dev.txt
-    a list of packages, required to develop this project
+    a list of packages required to develop this project
+
+sync_version.py
+    helper script to keep the version consistent across ``pyproject.toml``, ``__init__.py``, and ``docs/source/conf.py``
 
 README.rst
-    the main projecdt description / documentation file
+    the main project description / documentation file
 
 CONTRIBUTING.rst
-    a document containing information for potential contrubutors (developers) of the package
+    a document containing information for potential contributors (developers) of the package
 
 License
-    the project License
+    the project license
 
-.travis.yml
-    contains the set of instructions to run wit the `TravisCI <https://travis-ci.org/>`_ continuous integration service after the file repository has been updated
+.github/
+    GitHub Actions workflow definitions for CI testing and automated PyPI releases
 
 .gitignore
     defines the files in the project directory to be excluded from version control
@@ -100,13 +117,35 @@ sdypy_template_project/
     contains the core project source code, separated into meaningful sub-modules
 
 examples/
-    scripts, notebooks with examples to showcase the project
+    scripts and notebooks with examples to showcase the project
 
 docs/
     the documentation source and built files
 
 
-(For a more complex and custumuzable project structure, see the `Cookiecutter project <https://github.com/audreyr/cookiecutter-pypackage>`_.)
+(For a more complex and customizable project structure, see the `Cookiecutter project <https://github.com/audreyr/cookiecutter-pypackage>`_.)
+
+
+Version management
+------------------
+
+Use ``sync_version.py`` to keep the version consistent across ``pyproject.toml``, ``__init__.py``, and ``docs/source/conf.py``.
+
+Bump the patch/minor/major version:
+
+.. code-block:: console
+
+    $ python sync_version.py --bump patch
+    $ python sync_version.py --bump minor
+    $ python sync_version.py --bump major
+
+Or set an explicit version:
+
+.. code-block:: console
+
+    $ python sync_version.py --set-version 1.2.3
+
+The script updates all three files in one step, so you never have to edit them manually.
 
 
 Building the documentation
@@ -125,38 +164,64 @@ To test your documentation locally, run the following (starting from the main pr
 Your documentation files will be built inside the ``docs/build/html`` folder.
 
 
+Continuous integration
+----------------------
+
+The included GitHub Actions workflows run automatically once you push your project to GitHub:
+
+- **Testing** (``.github/workflows/python-package.yml``) — runs flake8 and pytest on every push across Python 3.10, 3.11, and 3.12.
+- **Release** (``.github/workflows/release-and-publish-to-pypi.yml``) — triggered when you push a ``v*`` tag; syncs the version, builds the distribution, creates a GitHub Release, and publishes to PyPI.
+
+To enable automated PyPI publishing, add your PyPI API token as a repository secret named ``PYPI_API_TOKEN`` under *Settings → Secrets and variables → Actions* on GitHub.
+
+
 Publishing the project
 ----------------------
 
-You can build your project and publish it to the `Python Package Index <https://pypi.org/>`_ with the following basic steps:
+**Automated (recommended)**
 
-1. Build you project source code :
+1. Bump and sync the version:
+
+.. code-block:: console
+
+    $ python sync_version.py --bump patch
+
+2. Commit, tag, and push:
+
+.. code-block:: console
+
+    $ git add -u
+    $ git commit -m "bump version to X.Y.Z"
+    $ git tag vX.Y.Z
+    $ git push && git push --tags
+
+The release workflow will build the package and publish it to PyPI automatically.
+
+**Manual (fallback)**
+
+Build the distribution:
 
 .. code-block:: console
 
     $ python -m build
 
-The built project can be tested locally by installing the resulting ``.whl`` file, found in the ``dist/`` folder  in a new virtual environemtn:
+Test the resulting ``.whl`` locally in a fresh environment:
 
 .. code-block:: console
 
-    $ python -m virtualenv venv
-    $ venv/Scripts/activate
-    $ python -m pip install <sdypy_template_project-#>.whl 
+    $ uv venv test-env
+    $ uv pip install --python test-env dist/<sdypy_template_project-X.Y.Z>.whl
 
-(replace ``<sdypy_template_project-#>`` above with the actual ``.whl`` file name).
-
-2. Upload the distribution files from ``dist/`` to PyPI :
+Upload to TestPyPI first to verify, then to the main index:
 
 .. code-block:: console
 
     $ python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+    $ python -m twine upload dist/*
 
-(``--repository-url https://test.pypi.org/legacy/`` uploads the package to the test PyPI for testing. To publish you package to the main PyPI repository, simply ommit this option from the above command.)
+For more information on the publishing process, see the `Python packaging tutorial <https://packaging.python.org/tutorials/packaging-projects/>`_.
 
-For more information on the publishng process, see this simpel `Python packaging tutorial <https://packaging.python.org/tutorials/packaging-projects/>`_.
-
-3. After that,  the sdypy_template_project will be available on PyPI and can be installed with `pip <https://pip.pypa.io>`_.
+Once published, the package can be installed with:
 
 .. code-block:: console
 
