@@ -60,7 +60,7 @@ Now you can replace the core source code modules in ``sdypy_template_project/`` 
 
 Remember to replace the project name (``sdypy_template_project``) with your own project name in the following files:
 
-- ``pyproject.toml`` — ``name``, ``description``, ``keywords``, ``[project.urls]``
+- ``pyproject.toml`` — ``name`` (the distribution name, and the self-reference in the ``dev`` extra), ``description``, ``keywords``, ``[project.urls]``
 - ``README.rst``
 - ``CONTRIBUTING.rst``
 - ``docs/source/conf.py`` — ``project``, ``author``, ``copyright``
@@ -230,7 +230,11 @@ Once published, the package can be installed with:
 
 .. code-block:: console
 
-    $ pip install sdypy_template_project
+    $ pip install sdypy-template-project
+
+The distribution name (``sdypy-template-project``, used with ``pip``) matches the
+import name (``sdypy_template_project``, used in Python) -- keep the two in sync
+when you rename the project.
 
 After installing sdypy_template_project you can use it like any other Python module.
 
