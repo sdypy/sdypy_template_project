@@ -22,7 +22,7 @@ sys.setrecursionlimit(1500)
 # -- Project information -----------------------------------------------------
 
 project = 'SDyPy project template'
-copyright = '2021, Janko Slavič, Domen Gorjup, Klemen Zaletelj'
+copyright = '2021-2026, Janko Slavič, Domen Gorjup, Klemen Zaletelj'
 author = 'Janko Slavič, Domen Gorjup, Klemen Zaletelj'
 one_line_description = 'A template for SDyPy projects.'
 
@@ -73,7 +73,9 @@ templates_path = ['_templates']
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-source_suffix = {'.rst': 'restructuredtext', '.md': 'restructuredtext'}
+# To also accept Markdown, enable `myst_parser` in `extensions` above, install
+# the `myst-parser` package and add: '.md': 'markdown'
+source_suffix = {'.rst': 'restructuredtext'}
 
 # The master toctree document.
 master_doc = 'index'

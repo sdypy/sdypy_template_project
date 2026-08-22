@@ -1,0 +1,12 @@
+# Keeps the GitHub Actions used in .github/workflows/ up to date, so the
+# workflows do not silently fall behind (e.g. actions pinned to an old
+# Node runtime).
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    groups:
+      github-actions:
+        patterns: ["*"]

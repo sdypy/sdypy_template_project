@@ -5,20 +5,20 @@ on:
     tags:
       - "v*"
 
-permissions:
-  contents: write
-  packages: write
-
 jobs:
   release:
     runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v4
+    permissions:
+      contents: write    # commit the version sync and create the GitHub Release
+      id-token: write    # PyPI Trusted Publishing (OIDC), no API token needed
 
-    - uses: actions/setup-python@v5
+    steps:
+    - uses: actions/checkout@v5
+
+    - uses: actions/setup-python@v6
       with:
-        python-version: "3.11"
+        python-version: "3.12"
 
     - name: Install dependencies
       run: pip install build tomli tomli-w
@@ -51,12 +51,21 @@ jobs:
       run: python -m build
 
     - name: Create GitHub Release and upload artifacts
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
-        files: dist/*.whl
+        files: dist/*
 
+    # Publishing uses PyPI Trusted Publishing: configure this repository and
+    # workflow file as a trusted publisher on PyPI (Your projects -> Publishing).
+    # No PYPI_API_TOKEN secret is required.
     - name: Publish to PyPI
-      uses: pypa/gh-action-pypi-publish@v1.4.2
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_API_TOKEN }}
+      uses: pypa/gh-action-pypi-publish@v1.14.2
+
+    # Alternative, if you cannot use Trusted Publishing: store a PyPI API token
+    # as the PYPI_API_TOKEN repository secret, drop the `id-token: write`
+    # permission above, and use this step instead of the one above.
+    #
+    # - name: Publish to PyPI
+    #   uses: pypa/gh-action-pypi-publish@v1.14.2
+    #   with:
+    #     password: ${{ secrets.PYPI_API_TOKEN }}

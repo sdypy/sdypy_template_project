@@ -15,31 +15,39 @@ requires-python = ">=3.10"
 
 # Dependency management (these must be installed for the package to work)
 dependencies = [
-    "numpy>=1.11.0",
-    "scipy>=1.2.0",
-    "matplotlib>=3.0.0",
-    "pyMRAW>=0.2.0",
-    "tqdm>=4.25.0",
+    "numpy>=1.21",
+    "scipy>=1.7",
+    "matplotlib>=3.5",
+    "tqdm>=4.62",
 ]
 
+# Note: no "License :: ..." classifier here on purpose -- with the SPDX
+# `license` field above (PEP 639) the classifier is deprecated.
 classifiers = [
     'Development Status :: 5 - Production/Stable',
     'Intended Audience :: Developers',
     'Topic :: Scientific/Engineering',
     'Programming Language :: Python :: 3.10',
-    "License :: OSI Approved :: MIT License",
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+    'Programming Language :: Python :: 3.14',
 ]
 
 # Optional dependencies (can be installed with `pip install sdypy-template[dev]`).
 # Can add as many as you want, but they must be listed in the `optional-dependencies` section.
 [project.optional-dependencies]
 dev = [
-    "sphinx",
-    "twine",
-    "wheel",
     "pytest",
     "build",
-    "sphinx-rtd-theme",
+    "twine",
+    "flake8",
+    "sdypy-template[docs]",
+]
+
+# Documentation-only dependencies (also used by Read the Docs, see .readthedocs.yaml).
+docs = [
+    "sphinx",
     "sphinx-book-theme",
     "sphinx-copybutton>=0.5.2",
 ]
