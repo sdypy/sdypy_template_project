@@ -22,7 +22,7 @@ is as follows.
 
   .. code-block:: console
 
-      $ git clone ttps://github.com/sdypy/sdypy_template_project.git
+      $ git clone https://github.com/sdypy/sdypy_template_project.git
       $ cd sdypy_template_project
 
 * Create a branch for local development:

@@ -44,29 +44,28 @@ To use this template, you have multiple options. The following two will cover mo
 
 You are now setup to begin working on your project.
 
-To begin development, create a virtual environment and install the required packages using `uv <https://github.com/astral-sh/uv>`_:
-
-.. code-block:: console
-
-    $ uv venv
-    $ uv pip install -r requirements.dev.txt
-
-Alternatively, install directly from ``pyproject.toml`` in editable mode:
+To begin development, create a virtual environment and install the project in
+editable mode using `uv <https://github.com/astral-sh/uv>`_:
 
 .. code-block:: console
 
     $ uv venv
     $ uv pip install -e ".[dev]"
 
+All dependencies are declared in ``pyproject.toml``: the runtime ones under
+``[project] dependencies``, the development and documentation ones under
+``[project.optional-dependencies]`` (``dev`` and ``docs``).
+
 Now you can replace the core source code modules in ``sdypy_template_project/`` with your code.
 
 Remember to replace the project name (``sdypy_template_project``) with your own project name in the following files:
 
-- ``pyproject.toml`` — ``name``, ``description``, ``keywords``, ``[project.urls]``
+- ``pyproject.toml`` — ``name`` (the distribution name, and the self-reference in the ``dev`` extra), ``description``, ``keywords``, ``[project.urls]``
 - ``README.rst``
 - ``CONTRIBUTING.rst``
 - ``docs/source/conf.py`` — ``project``, ``author``, ``copyright``
 - ``sync_version.py`` — the ``package_name`` variable at the top
+- ``.readthedocs.yaml`` — nothing project-specific, but check the Python version
 - ``.github/workflows/release-and-publish-to-pypi.yml`` — the branch name in the ``git push`` step (``master`` or ``main``)
 - the ``sdypy_template_project/`` directory name itself
 
@@ -83,15 +82,6 @@ The project code is structured as follows:
 pyproject.toml
     the main project configuration file: package metadata, dependencies, and build system
 
-setup.py
-    legacy setuptools configuration, kept for backwards compatibility
-
-requirements.txt
-    a list of packages required to use this project
-
-requirements.dev.txt
-    a list of packages required to develop this project
-
 sync_version.py
     helper script to keep the version consistent across ``pyproject.toml``, ``__init__.py``, and ``docs/source/conf.py``
 
@@ -105,7 +95,11 @@ License
     the project license
 
 .github/
-    GitHub Actions workflow definitions for CI testing and automated PyPI releases
+    GitHub Actions workflow definitions for CI testing and automated PyPI releases,
+    and the Dependabot configuration that keeps those actions up to date
+
+.readthedocs.yaml
+    the Read the Docs build configuration (required by Read the Docs)
 
 .gitignore
     defines the files in the project directory to be excluded from version control
@@ -153,7 +147,9 @@ Building the documentation
 
 By setting up `ReadTheDocs <https://readthedocs.org/>`_, your project documentation can automatically be built and puclished as a publicly available website.
 
-To test your documentation locally, run the following (starting from the main project directory) :
+To test your documentation locally, install the documentation dependencies
+(``uv pip install -e ".[docs]"``, already included in ``[dev]``) and run the
+following (starting from the main project directory) :
 
 .. code-block:: console
 
@@ -169,10 +165,19 @@ Continuous integration
 
 The included GitHub Actions workflows run automatically once you push your project to GitHub:
 
-- **Testing** (``.github/workflows/python-package.yml``) — runs flake8 and pytest on every push across Python 3.10, 3.11, and 3.12.
+- **Testing** (``.github/workflows/python-package.yml``) — runs flake8 and pytest on every push and pull request, across Python 3.10 to 3.14.
 - **Release** (``.github/workflows/release-and-publish-to-pypi.yml``) — triggered when you push a ``v*`` tag; syncs the version, builds the distribution, creates a GitHub Release, and publishes to PyPI.
 
-To enable automated PyPI publishing, add your PyPI API token as a repository secret named ``PYPI_API_TOKEN`` under *Settings → Secrets and variables → Actions* on GitHub.
+Publishing uses `PyPI Trusted Publishing <https://docs.pypi.org/trusted-publishers/>`_,
+so no API token is stored in the repository. On PyPI, under *Your projects →
+Publishing*, add a trusted publisher for your GitHub repository with the workflow
+file name ``release-and-publish-to-pypi.yml``. If you cannot use Trusted
+Publishing, the workflow contains a commented-out fallback that uses a
+``PYPI_API_TOKEN`` repository secret instead.
+
+``.github/dependabot.yml`` opens a monthly pull request when a newer version of a
+used GitHub Action is available; without it the actions quietly fall behind (and
+eventually run on an unsupported Node runtime).
 
 
 Publishing the project
@@ -225,7 +230,11 @@ Once published, the package can be installed with:
 
 .. code-block:: console
 
-    $ pip install sdypy_template_project
+    $ pip install sdypy-template-project
+
+The distribution name (``sdypy-template-project``, used with ``pip``) matches the
+import name (``sdypy_template_project``, used in Python) -- keep the two in sync
+when you rename the project.
 
 After installing sdypy_template_project you can use it like any other Python module.
 
