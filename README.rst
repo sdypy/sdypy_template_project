@@ -10,39 +10,39 @@ Using the template
 To use this template, you have multiple options. The following two will cover most use cases:
 
 1. You can use GitHub's templating functionality. A new repository will be created on GitHub for your project. Use this option if your project does not yet have an online repository.
-   
-   Click the "Use this template" button on the project template Github repository (see image below).
 
-    .. image:: images/use_template.png
+   Click the "Use this template" button on the project template GitHub repository (see image below).
 
-   Simply select and confirm a name for your new repository, and a copy of this template will be created for you. 
+   .. image:: https://raw.githubusercontent.com/sdypy/sdypy_template_project/master/docs/source/images/use_template.png
+      :alt: The "Use this template" button on GitHub
+
+   Select and confirm a name for your new repository, and a copy of this template will be created for you.
 
    You can now clone your new repository onto your local machine. If your new repository is located at ``https://github.com/<your_name>/<my_new_project>``, for example:
 
-    .. code-block:: console
+   .. code-block:: console
 
-        $ git clone https://github.com/<your_name>/<my_new_project>
+       $ git clone https://github.com/<your_name>/<my_new_project>
 
-   A folder named ``<my_new_project>`` will be created on your machine. It is already setup with a connection to your new GitHub repository, and you can begin developing your package!
+   A folder named ``<my_new_project>`` will be created on your machine. It is already connected to your new GitHub repository, and you can begin developing your package!
 
-2. If you already have a repository for your project, located for example at ``https://github.com/<your_name>/<my_existing_project>``, 
-   you can use our template by cloning in onto you local machine. This downloads the files into a local folder, with a connection with the online repository already set up.
-   Do this by running :
+2. If you already have a repository for your project, located for example at ``https://github.com/<your_name>/<my_existing_project>``,
+   clone the template onto your local machine:
 
-    .. code-block:: console
+   .. code-block:: console
 
-        $ git clone https://github.com/sdypy/sdypy_template_project
+       $ git clone https://github.com/sdypy/sdypy_template_project
 
-   Our template files will be downloaded into the ``sdypy_template_project`` folder. 
-   
-   You can now either copy these files into you existing local project folder, or connect the cloned repository in the ``sdypy_template_project`` folder with your existing online repository :
+   The template files will be downloaded into the ``sdypy_template_project`` folder. This clone is connected to the template repository, not to yours.
 
-    .. code-block:: console
+   You can now either copy these files into your existing local project folder, or connect the cloned repository in the ``sdypy_template_project`` folder with your existing online repository:
 
-        $ git remote rm origin
-        $ git remote add origin https://github.com/ladisk/<my_existing_project>.git
+   .. code-block:: console
 
-You are now setup to begin working on your project.
+       $ git remote rm origin
+       $ git remote add origin https://github.com/<your_name>/<my_existing_project>.git
+
+You are now set up to begin working on your project.
 
 To begin development, create a virtual environment and install the project in
 editable mode using `uv <https://github.com/astral-sh/uv>`_:
@@ -52,26 +52,41 @@ editable mode using `uv <https://github.com/astral-sh/uv>`_:
     $ uv venv
     $ uv pip install -e ".[dev]"
 
+Activate the environment, so that the ``python``, ``pytest`` and ``make`` commands below use it:
+
+.. code-block:: console
+
+    $ source .venv/bin/activate
+
+(On Windows, run ``.venv\Scripts\activate`` instead.)
+
 All dependencies are declared in ``pyproject.toml``: the runtime ones under
 ``[project] dependencies``, the development and documentation ones under
 ``[project.optional-dependencies]`` (``dev`` and ``docs``).
 
 Now you can replace the core source code modules in ``sdypy_template_project/`` with your code.
 
-Remember to replace the project name (``sdypy_template_project``) with your own project name in the following files:
+Remember to replace the project name with your own. The import name (``sdypy_template_project``) and the distribution name (``sdypy-template-project``) appear in the following places:
 
-- ``pyproject.toml`` — ``name`` (the distribution name, and the self-reference in the ``dev`` extra), ``description``, ``keywords``, ``[project.urls]``
-- ``README.rst``
-- ``CONTRIBUTING.rst``
-- ``docs/source/conf.py`` — ``project``, ``author``, ``copyright``
+- ``pyproject.toml`` — ``name`` (the distribution name, and the self-reference in the ``dev`` extra), ``authors``, ``maintainers``, ``description``, ``keywords``, ``[project.urls]``, and the ``include`` paths of the wheel and sdist build targets
+- ``README.rst`` and ``CONTRIBUTING.rst``
+- ``docs/source/conf.py`` — ``project``, ``author``, ``copyright``, and ``repository_url`` / ``repository_branch`` in ``html_theme_options``
+- ``docs/source/code.rst`` — the ``automodule`` paths
 - ``sync_version.py`` — the ``package_name`` variable at the top
 - ``.readthedocs.yaml`` — nothing project-specific, but check the Python version
 - ``.github/workflows/release-and-publish-to-pypi.yml`` — the branch name in the ``git push`` step (``master`` or ``main``) and the PyPI project name in the ``environment`` ``url``
-- the ``sdypy_template_project/`` directory name itself
+- ``tests/`` and ``examples/`` — the imports
+- the ``sdypy_template_project/`` directory name itself, and the usage text in its ``__main__.py``
 
-Consider adding unit-tests for your project by modifying the files found in ``tests/``. The provided test file structure is setup to work with `pytest <https://docs.pytest.org/en/latest/>`_.
+To find any occurrence you missed, search the project:
 
-To also use the sphinx documentation, modify files in ``docs/source``, or remove the ``docs/`` folder and quickstart a fresh documentation version using the ``sphinx-quickstart`` command (see `Sphinx - Getting started <https://www.sphinx-doc.org/en/master/usage/quickstart.html>`_ for more info).
+.. code-block:: console
+
+    $ git grep -n -e sdypy_template_project -e sdypy-template-project
+
+Consider adding unit tests for your project by modifying the files found in ``tests/``. The provided test files are set up to work with `pytest <https://docs.pytest.org/en/latest/>`_.
+
+To also use the Sphinx documentation, modify files in ``docs/source``, or remove the ``docs/`` folder and quickstart a fresh documentation version using the ``sphinx-quickstart`` command (see `Sphinx - Getting started <https://www.sphinx-doc.org/en/master/usage/quickstart.html>`_ for more info).
 
 
 File structure
@@ -105,7 +120,7 @@ License
     defines the files in the project directory to be excluded from version control
 
 tests/
-    contains project unit-tests
+    contains project unit tests
 
 sdypy_template_project/
     contains the core project source code, separated into meaningful sub-modules
@@ -114,7 +129,7 @@ examples/
     scripts and notebooks with examples to showcase the project
 
 docs/
-    the documentation source and built files
+    the documentation source (the build output in ``docs/build/`` is not version-controlled)
 
 
 (For a more complex and customizable project structure, see the `Cookiecutter project <https://github.com/audreyr/cookiecutter-pypackage>`_.)
@@ -145,11 +160,11 @@ The script updates all three files in one step, so you never have to edit them m
 Building the documentation
 --------------------------
 
-By setting up `ReadTheDocs <https://readthedocs.org/>`_, your project documentation can automatically be built and puclished as a publicly available website.
+By setting up `Read the Docs <https://readthedocs.org/>`_, your project documentation can automatically be built and published as a publicly available website.
 
 To test your documentation locally, install the documentation dependencies
 (``uv pip install -e ".[docs]"``, already included in ``[dev]``) and run the
-following (starting from the main project directory) :
+following (starting from the main project directory):
 
 .. code-block:: console
 
@@ -230,7 +245,7 @@ Test the resulting ``.whl`` locally in a fresh environment:
 .. code-block:: console
 
     $ uv venv test-env
-    $ uv pip install --python test-env dist/<sdypy_template_project-X.Y.Z>.whl
+    $ uv pip install --python test-env dist/sdypy_template_project-X.Y.Z-py3-none-any.whl
 
 Upload to TestPyPI first to verify, then to the main index:
 
@@ -247,11 +262,11 @@ Once published, the package can be installed with:
 
     $ pip install sdypy-template-project
 
-The distribution name (``sdypy-template-project``, used with ``pip``) matches the
-import name (``sdypy_template_project``, used in Python) -- keep the two in sync
+The distribution name (``sdypy-template-project``, used with ``pip``) corresponds to the
+import name (``sdypy_template_project``, used in Python). Keep the two in sync
 when you rename the project.
 
-After installing sdypy_template_project you can use it like any other Python module.
+After installing the package, you can use it like any other Python module.
 
 Here is a simple example with the current example code:
 
@@ -265,15 +280,18 @@ Here is a simple example with the current example code:
     results = iep.get_displacements(video, point=[5, 5], roi_size=[7, 7])
 
     plt.figure()
-    plt.plot(results[0], label='x [px]')
-    plt.plot(results[1], label='y [px]')
+    plt.plot(results[0], label='x')
+    plt.plot(results[1], label='y')
+    plt.xlabel('frame [/]')
+    plt.ylabel('displacement [pixel]')
     plt.legend()
     plt.show()
 
-You can also run this basic example by running the following command in the project base direcotry:
+You can also run this example with the following command in the project base directory:
 
 .. code-block:: console
 
     $ python -m examples.basic_example
 
-The `Read the Docs page <http://sdypy_template_project.readthedocs.io>`_ provides the project documentation.
+Once Read the Docs is set up, the documentation is published at
+``https://<your-project>.readthedocs.io``.
