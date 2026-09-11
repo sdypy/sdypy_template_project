@@ -66,7 +66,7 @@ Remember to replace the project name (``sdypy_template_project``) with your own 
 - ``docs/source/conf.py`` — ``project``, ``author``, ``copyright``
 - ``sync_version.py`` — the ``package_name`` variable at the top
 - ``.readthedocs.yaml`` — nothing project-specific, but check the Python version
-- ``.github/workflows/release-and-publish-to-pypi.yml`` — the branch name in the ``git push`` step (``master`` or ``main``)
+- ``.github/workflows/release-and-publish-to-pypi.yml`` — the branch name in the ``git push`` step (``master`` or ``main``) and the PyPI project name in the ``environment`` ``url``
 - the ``sdypy_template_project/`` directory name itself
 
 Consider adding unit-tests for your project by modifying the files found in ``tests/``. The provided test file structure is setup to work with `pytest <https://docs.pytest.org/en/latest/>`_.
@@ -169,11 +169,26 @@ The included GitHub Actions workflows run automatically once you push your proje
 - **Release** (``.github/workflows/release-and-publish-to-pypi.yml``) — triggered when you push a ``v*`` tag; syncs the version, builds the distribution, creates a GitHub Release, and publishes to PyPI.
 
 Publishing uses `PyPI Trusted Publishing <https://docs.pypi.org/trusted-publishers/>`_,
-so no API token is stored in the repository. On PyPI, under *Your projects →
-Publishing*, add a trusted publisher for your GitHub repository with the workflow
-file name ``release-and-publish-to-pypi.yml``. If you cannot use Trusted
-Publishing, the workflow contains a commented-out fallback that uses a
-``PYPI_API_TOKEN`` repository secret instead.
+so no API token is stored in the repository. Register your GitHub repository as a
+trusted publisher on PyPI with these values:
+
+- **Workflow name:** ``release-and-publish-to-pypi.yml``
+- **Environment name:** ``pypi``
+
+For a project that is not yet on PyPI, add a *pending publisher* under *Account
+settings → Publishing* and use the ``name`` from ``pyproject.toml`` as the PyPI
+project name. The first tagged release creates the project. For a project that
+already exists, go to *Your projects → Manage → Publishing* instead.
+
+PyPI trusts only this exact workflow file name. If you rename the file, update the
+trusted publisher on PyPI, or publishing fails.
+
+The release job runs in the ``pypi`` GitHub environment. GitHub creates it on the
+first run. To require manual approval before each release, add a protection rule
+under *Settings → Environments → pypi*.
+
+If you cannot use Trusted Publishing, the workflow contains a commented-out
+fallback that uses a ``PYPI_API_TOKEN`` repository secret instead.
 
 ``.github/dependabot.yml`` opens a monthly pull request when a newer version of a
 used GitHub Action is available; without it the actions quietly fall behind (and

@@ -8,6 +8,11 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    # Must match the environment name set in the trusted publisher on PyPI.
+    # Add protection rules (e.g. required reviewers) under Settings -> Environments.
+    environment:
+      name: pypi
+      url: https://pypi.org/p/sdypy-template-project
 
     permissions:
       contents: write    # commit the version sync and create the GitHub Release
