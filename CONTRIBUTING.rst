@@ -18,12 +18,21 @@ is as follows.
 
 * Fork the ``sdypy_template_project`` repo into your account.
 
-* Obtain the source by cloning it onto your development machine.
+* Obtain the source by cloning your fork onto your development machine.
 
   .. code-block:: console
 
-      $ git clone https://github.com/sdypy/sdypy_template_project.git
+      $ git clone https://github.com/<your_name>/sdypy_template_project.git
       $ cd sdypy_template_project
+
+* Install the project with its development dependencies, and activate the
+  environment (on Windows, run ``.venv\Scripts\activate`` instead):
+
+  .. code-block:: console
+
+      $ uv venv
+      $ uv pip install -e ".[dev]"
+      $ source .venv/bin/activate
 
 * Create a branch for local development:
 
@@ -37,7 +46,7 @@ is as follows.
 * Develop fix or enhancement:
 
   * Make a fix or enhancement (e.g. modify a class, method, function, module,
-    etc).
+    etc.).
 
   * Update an existing unit test or create a new unit test module to verify
     the change works as expected.
@@ -49,16 +58,14 @@ is as follows.
         $ pytest
 
 
-* The docs should be updated for anything but trivial bug fixes. 
+* The docs should be updated for anything but trivial bug fixes. Check that
+  the docs build:
 
+  .. code-block:: console
 
-Perform docs check.
-
-    .. code-block:: console
-
-        $ cd docs
-        $ make clean
-        $ make html
+      $ cd docs
+      $ make clean
+      $ make html
 
 
 * Commit and push changes to your fork.
@@ -70,9 +77,9 @@ Perform docs check.
       $ git push origin name-of-your-bugfix-or-feature
 
   A pull request should preferably only have one commit upon the current
-  master HEAD, (via rebases and squash).
+  master HEAD (via rebases and squash).
 
-* Submit a pull request through the service website (e.g. Github, Gitlab).
+* Submit a pull request through the service website (e.g. GitHub, GitLab).
 
 * Check automated continuous integration steps all pass. Fix any problems
   if necessary and update the pull request.

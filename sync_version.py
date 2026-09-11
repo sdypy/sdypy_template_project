@@ -1,18 +1,37 @@
-import sys
-import tomli
-import tomli_w
+import re
 import argparse
 
 package_name = "sdypy_template_project"
+
+# pyproject.toml is edited as plain text, not parsed and re-written, so that its
+# comments and formatting are kept. Only the `version = "..."` line changes.
+PROJECT_TABLE = re.compile(r"^\[project\][ \t]*\r?$", re.MULTILINE)
+NEXT_TABLE = re.compile(r"^\[", re.MULTILINE)
+VERSION_LINE = re.compile(r"^(version\s*=\s*)([\"'])(.*?)\2", re.MULTILINE)
+
+
+def find_version(text):
+    project = PROJECT_TABLE.search(text)
+    if project is None:
+        raise ValueError("No [project] table found in pyproject.toml")
+    next_table = NEXT_TABLE.search(text, project.end())
+    end = next_table.start() if next_table else len(text)
+
+    match = VERSION_LINE.search(text, project.end(), end)
+    if match is None:
+        raise ValueError("No version found in the [project] table of pyproject.toml")
+    return match
+
+
+def get_version():
+    with open("pyproject.toml", "r", encoding="utf8", newline="") as f:
+        return find_version(f.read()).group(3)
 
 
 def synchronize_version():
     print("Synchronizing version (pyproject.toml and __init__.py)...")
 
-    with open("pyproject.toml", "rb") as f:
-        pyproject = tomli.load(f)
-
-    version_toml = pyproject["project"]["version"]
+    version_toml = get_version()
 
     with open(f"{package_name}/__init__.py", "r") as f:
         init = f.readlines()
@@ -39,17 +58,19 @@ def synchronize_version():
 
 
 def set_version(version):
-    with open("pyproject.toml", "rb") as f:
-        pyproject = tomli.load(f)
-    pyproject["project"]["version"] = version
-    with open("pyproject.toml", "wb") as f:
-        tomli_w.dump(pyproject, f)
+    with open("pyproject.toml", "r", encoding="utf8", newline="") as f:
+        text = f.read()
+
+    match = find_version(text)
+    quote = match.group(2)
+    text = text[:match.start()] + f"{match.group(1)}{quote}{version}{quote}" + text[match.end():]
+
+    with open("pyproject.toml", "w", encoding="utf8", newline="") as f:
+        f.write(text)
 
 
 def bump_version(bump):
-    with open("pyproject.toml", "rb") as f:
-        pyproject = tomli.load(f)
-    version = pyproject["project"]["version"]
+    version = get_version()
     version_parts = version.split(".")
     if bump == "patch":
         version_parts[2] = str(int(version_parts[2]) + 1)
