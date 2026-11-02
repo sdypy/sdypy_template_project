@@ -64,13 +64,13 @@ jobs:
     # workflow file as a trusted publisher on PyPI (Your projects -> Publishing).
     # No PYPI_API_TOKEN secret is required.
     - name: Publish to PyPI
-      uses: pypa/gh-action-pypi-publish@v1.14.2
+      uses: pypa/gh-action-pypi-publish@v1.14.3
 
     # Alternative, if you cannot use Trusted Publishing: store a PyPI API token
     # as the PYPI_API_TOKEN repository secret, drop the `id-token: write`
     # permission above, and use this step instead of the one above.
     #
     # - name: Publish to PyPI
-    #   uses: pypa/gh-action-pypi-publish@v1.14.2
+    #   uses: pypa/gh-action-pypi-publish@v1.14.3
     #   with:
     #     password: ${{ secrets.PYPI_API_TOKEN }}
