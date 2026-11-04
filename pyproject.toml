@@ -11,7 +11,7 @@ license = "MIT"
 description = "A template for SDyPy projects."
 readme = "README.rst"
 keywords = ["sdypy", "template"]
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 
 # Dependency management (these must be installed for the package to work)
 dependencies = [
@@ -27,11 +27,9 @@ classifiers = [
     'Development Status :: 5 - Production/Stable',
     'Intended Audience :: Developers',
     'Topic :: Scientific/Engineering',
-    'Programming Language :: Python :: 3.10',
-    'Programming Language :: Python :: 3.11',
-    'Programming Language :: Python :: 3.12',
     'Programming Language :: Python :: 3.13',
     'Programming Language :: Python :: 3.14',
+    'Programming Language :: Python :: 3.15',
 ]
 
 # Optional dependencies (can be installed with `pip install sdypy-template-project[dev]`).

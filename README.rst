@@ -180,7 +180,7 @@ Continuous integration
 
 The included GitHub Actions workflows run automatically once you push your project to GitHub:
 
-- **Testing** (``.github/workflows/python-package.yml``) — runs flake8 and pytest on every push and pull request, across Python 3.10 to 3.14.
+- **Testing** (``.github/workflows/python-package.yml``) — runs flake8 and pytest on every push and pull request, across Python 3.13 to 3.15.
 - **Release** (``.github/workflows/release-and-publish-to-pypi.yml``) — triggered when you push a ``v*`` tag; syncs the version, builds the distribution, creates a GitHub Release, and publishes to PyPI.
 
 Publishing uses `PyPI Trusted Publishing <https://docs.pypi.org/trusted-publishers/>`_,
